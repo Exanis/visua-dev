@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: visua-api
+  labels:
+    app: visua-api
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: http
+  selector:
+    app: visua-api
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: visua-api
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: visua-api
+    spec:
+      terminationGracePeriodSeconds: 30
+      initContainers:
+      - name: check-db-ready
+        image: postgres:9.6.5
+        command: [
+          'sh',
+          '-c',
+          'until pg_isready -h visua-postgres -p 5432;
+          do echo waiting for database; sleep 2; done;'
+        ]
+      containers:
+      - name: visua-api
+        image: visua-api
+        env:
+        - name: DEBUG
+          value: "True"
+        - name: DATABASES
+          value: pgsql://visua:visua-dev-pwd@visua-postgres:5432/visua
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP

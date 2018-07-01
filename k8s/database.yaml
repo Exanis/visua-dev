@@ -1,0 +1,58 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: visua-postgres
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+  selector:
+    app: visua-postgres
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: visua-postgres
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: visua-postgres
+    spec:
+      containers:
+      - name: visua-postgres
+        image: postgres
+        ports:
+        - name: postgresql
+          containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: visua
+        - name: POSTGRES_USER
+          value: visua-dev
+        - name: PGUSER
+          value: visua-dev
+        - name: POSTGRES_PASSWORD
+          value: visua-dev-pwd
+        - name: POD_IP
+          valueFrom: { fieldRef: { fieldPath: status.podIP } }
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          initialDelaySeconds: 10
+          timeoutSeconds: 10
+          failureThreshold: 10
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          initialDelaySeconds: 10
+          timeoutSeconds: 10
+          periodSeconds: 10
