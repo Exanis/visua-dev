@@ -13,7 +13,8 @@ Visua tools assume that you will have a way to deploy to a kubernetes (minikube 
 
 Visua then use skaffold to manage and rebuild images. It will assume that your folders looks like this:
 
-```my-folder/
+```
+my-folder/
     visua-api/
     visua-dev/
 ```
