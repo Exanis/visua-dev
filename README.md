@@ -17,6 +17,7 @@ Visua then use skaffold to manage and rebuild images. It will assume that your f
 my-folder/
     visua-api/
     visua-dev/
+    visua-frontend/
 ```
 
 If you need to change this, just edit `skaffold.yaml`.

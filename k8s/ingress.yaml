@@ -12,3 +12,7 @@ spec:
         backend:
           serviceName: visua-api
           servicePort: 80
+      - path: /
+        backend:
+          serviceName: visua-frontend
+          servicePort: 80

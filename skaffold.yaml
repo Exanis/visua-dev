@@ -5,6 +5,8 @@ build:
   artifacts:
   - imageName: visua-api
     workspace: ../visua-api
+  - imageName: visua-frontend
+    workspace: ../visua-frontend
 deploy:
   kubectl:
     manifests:
