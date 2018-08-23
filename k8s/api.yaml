@@ -40,8 +40,14 @@ spec:
         env:
         - name: DEBUG
           value: "True"
-        - name: DATABASES
-          value: pgsql://visua:visua-dev-pwd@visua-postgres:5432/visua
+        - name: DATABASE_URL
+          value: pgsql://visua-dev:visua-dev-pwd@visua-postgres:5432/visua
+        - name: ADMIN_USER
+          value: admin
+        - name: ADMIN_EMAIL
+          value: admin@admin.ad
+        - name: ADMIN_PASSWORD
+          value: admin
         ports:
         - name: http
           containerPort: 80
